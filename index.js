@@ -9,7 +9,9 @@ const port = process.env.PORT || 3000;
 
 // Initialize Firebase Admin
 admin.initializeApp({
-  credential: admin.credential.cert(require("./espresso-emporium-5efb9-firebase-adminsdk-fbsvc-c1bfd6b5af.json")),
+  credential: admin.credential.cert(
+    require("./espresso-emporium-5efb9-firebase-adminsdk-fbsvc-c1bfd6b5af.json")
+  ),
 });
 
 // Middleware
@@ -60,12 +62,16 @@ async function run() {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
       const update = { $set: req.body };
-      const result = await coffeeCollection.updateOne(filter, update, { upsert: true });
+      const result = await coffeeCollection.updateOne(filter, update, {
+        upsert: true,
+      });
       res.send(result);
     });
 
     app.delete("/coffees/:id", async (req, res) => {
-      const result = await coffeeCollection.deleteOne({ _id: new ObjectId(req.params.id) });
+      const result = await coffeeCollection.deleteOne({
+        _id: new ObjectId(req.params.id),
+      });
       res.send(result);
     });
 
@@ -76,19 +82,35 @@ async function run() {
     });
 
     app.get("/users/:id", async (req, res) => {
-      const result = await userCollection.findOne({ _id: new ObjectId(req.params.id) });
+      const result = await userCollection.findOne({
+        _id: new ObjectId(req.params.id),
+      });
       res.send(result);
     });
 
     app.post("/users", async (req, res) => {
       const userProfile = req.body;
       const result = await userCollection.insertOne(userProfile);
-      console.log(userProfile)
+      console.log(userProfile);
+      res.send(result);
+    });
+
+    app.patch("/users", async (req, res) => {
+      const { email, lastSignInTime } = req.body;
+      const filter = { email: email };
+      const updatedDoc = {
+        $set: {
+          lastSignInTime: lastSignInTime,
+        },
+      };
+      const result = await userCollection.updateOne(filter, updatedDoc);
       res.send(result);
     });
 
     app.delete("/users/:id", async (req, res) => {
-      const result = await userCollection.deleteOne({ _id: new ObjectId(req.params.id) });
+      const result = await userCollection.deleteOne({
+        _id: new ObjectId(req.params.id),
+      });
       res.send(result);
     });
 
