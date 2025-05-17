@@ -1,3 +1,4 @@
 node_modules
 .env
 espresso-emporium-5efb9-firebase-adminsdk-fbsvc-c1bfd6b5af.json
+.vercel
