@@ -62,9 +62,8 @@ async function run() {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
       const update = { $set: req.body };
-      const result = await coffeeCollection.updateOne(filter, update, {
-        upsert: true,
-      });
+      const options = { upsert: true };
+      const result = await coffeeCollection.updateOne(filter, update, options);
       res.send(result);
     });
 
@@ -92,6 +91,23 @@ async function run() {
       const userProfile = req.body;
       const result = await userCollection.insertOne(userProfile);
       console.log(userProfile);
+      res.send(result);
+    });
+
+    app.put("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const updateUserInfo = req.body;
+      const updatedDoc = {
+        $set: {
+          name: updateUserInfo.name,
+          address: updateUserInfo.address,
+          phone: updateUserInfo.phone,
+          photo: updateUserInfo.photo,
+        },
+      };
+      const options = { upsert: true };
+      const result = await userCollection.updateOne(query, updatedDoc, options);
       res.send(result);
     });
 
