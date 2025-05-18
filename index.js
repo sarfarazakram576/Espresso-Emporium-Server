@@ -1,8 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const admin = require("firebase-admin");
-require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -144,7 +144,6 @@ async function run() {
     await client.db("admin").command({ ping: 1 });
     console.log("MongoDB connected.");
   } finally {
-    // Optional: keep MongoDB open for continuous use
   }
 }
 
